@@ -19,8 +19,8 @@ using namespace std;
 ///////////////////////////// VERY EPIC ////////////////////////////////////
 enum Drop { Base = 1, Excalibur = 8, Mithril, Excalipoor, DragonBlade = 23 };
 
-const int EVENT_SIZE = 100;
-const int MAX_CHARACTER_EACH_LINE = 250;
+const int EVENT_SIZE = 200;
+const int MAX_CHARACTER_EACH_LINE = 1024;
 
 struct knight
 {
