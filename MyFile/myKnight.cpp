@@ -11,7 +11,7 @@ using namespace std;
 #ifndef DEBUG
 #define LOG_STAT
 #else
-#define LOG_STAT cout << "Event " << theEvent << ":\t" << theKnight.HP << ' ' << theKnight.level << ' ' << theKnight.remedy << ' ' << theKnight.maidenkiss << ' ' << theKnight.phoenixdown << endl
+#define LOG_STAT cout << i + 1 << "th event " << theEvent << ":\t" << theKnight.HP << ' ' << theKnight.level << ' ' << theKnight.remedy << ' ' << theKnight.maidenkiss << ' ' << theKnight.phoenixdown << endl
 #endif
 
 ///////////////////////////// VERY EPIC ////////////////////////////////////
@@ -212,7 +212,7 @@ int main(int argc, char** argv)
 		levelO = ( (i + 1) > 6 ) ? ( b > 5 ? b : 5) : b;
 
 		// NEW: Lancelot can pick up Excalipoor
-		bool normalWin = (theKnight.level > levelO || isArthur) && weapon != Excalipoor || isDragonKnight && weapon == DragonBlade || isPaladin || odinBuff;
+		bool normalWin = isPaladin || odinBuff || (theKnight.level > levelO || isArthur) && weapon != Excalipoor || isDragonKnight && weapon == DragonBlade;
 		bool normalLose = theKnight.level < levelO || weapon == Excalipoor;
 	
 		// MAIN EVENT		
@@ -247,8 +247,7 @@ int main(int argc, char** argv)
 			}
 		break;
 		case 6:		// SHAMAN
-			// NEW: Odin beat these dudes for you
-			if ( !(odinBuff || isTiny && isFrog) ) { break; }
+			if (isTiny || isFrog) { break; }
 
 			if (normalWin) 
 			{ 
@@ -262,7 +261,7 @@ int main(int argc, char** argv)
 			}
 		break;
 		case 7:		// VAJSH
-			if ( !(odinBuff || isTiny && isFrog) ) { break; }
+			if (isTiny || isFrog) { break; }
 
 			if (normalWin) 
 			{ 
@@ -383,7 +382,7 @@ int main(int argc, char** argv)
 		
 		// AFTER EVENT
 		LOG_STAT;
-
+		
 		if (theKnight.HP < 1)	// NEAR-DEATH
 		{
 			if (theKnight.phoenixdown > 0)
