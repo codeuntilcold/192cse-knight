@@ -10,7 +10,9 @@ using namespace std;
 ///////////////////////////// DEBUG MACROS /////////////////////////////////
 #ifndef DEBUG
 #define LOG_STAT
+#define LOG_IDENTITY
 #else
+#define LOG_IDENTITY cout << "Paladin " << isPaladin << " DragonKnight " << isDragonKnight << endl
 #define LOG_STAT cout << i + 1 << "th event " << theEvent << ":\t" << theKnight.HP << ' ' << theKnight.level << ' ' << theKnight.remedy << ' ' << theKnight.maidenkiss << ' ' << theKnight.phoenixdown << endl
 #endif
 
@@ -180,28 +182,30 @@ int main(int argc, char** argv)
 	bool isLancelot = (theKnight.HP == 888) ? true : false;
 	bool isPaladin = true;
 	bool isDragonKnight = false;
-
+	
 	Drop weapon = Base;
 	Drop armor = Base;
 	
 	// IDENTITY
-		if (theKnight.HP == 1) isPaladin = false;
-		for (int itr = 2; itr < theKnight.HP / 2 + 1; itr++) 
-		{ 
-			if (theKnight.HP % itr == 0) isPaladin = false; 
-		}
+	if (theKnight.HP == 1) { isPaladin = false; }
 
-		if (theKnight.HP % 2 == 0 && !isLancelot)	// Sum of Pythagorean triples is always even
-		{
-			for (int x = 1; x < theKnight.HP / 3 + 1; x++) {	// x is smallest of three
-				for (int y = x + 1; y < theKnight.HP - x + 1; y++) 
-				{
-					int z = theKnight.HP - x - y;				
-					if (x*x + y*y == z*z) { isDragonKnight = true; }
-				}
+	for (int itr = 2; itr < theKnight.HP / 2 + 1; itr++) { 
+		if (theKnight.HP % itr == 0) 
+		{ 
+			isPaladin = false; 
+		} 
+	}
+
+	if (theKnight.HP % 2 == 0 && !isLancelot) {				// Sum of Pythagorean triples is always even
+		for (int x = 1; x < theKnight.HP / 3 + 1; x++) {
+			for (int y = x + 1; y < theKnight.HP - x + 1; y++) {
+				int z = theKnight.HP - x - y;
+
+				if (x*x + y*y == z*z) { isDragonKnight = true; }
 			}
 		}
-	//
+	}
+	LOG_IDENTITY;
 
 	// MAIN EVENTS
 	for (i = 0; i < nEvent; i++)
@@ -251,7 +255,7 @@ int main(int argc, char** argv)
 
 			if (normalWin) 
 			{ 
-				theKnight.level = (theKnight.level > 9) ? (theKnight.level) : (theKnight.level + 2); 
+				theKnight.level = (theKnight.level + 2 > 10) ? 10 : (theKnight.level + 2);
 			}
 			else if (normalLose)
 			{
@@ -265,7 +269,7 @@ int main(int argc, char** argv)
 
 			if (normalWin) 
 			{ 
-				theKnight.level = (theKnight.level > 9) ? (theKnight.level) : (theKnight.level + 2);
+				theKnight.level = (theKnight.level + 2 > 10) ? 10 : (theKnight.level + 2);
 			}
 			else if (normalLose)
 			{
@@ -282,7 +286,7 @@ int main(int argc, char** argv)
 			armor = Mithril;
 		break;
 		case 10:	// EXCALIPOOR
-			// NEW: Odin
+			// NEW: Odin won't pick you a bad sword
 			if ( !(theKnight.level > 4 || isArthur || isPaladin || isDragonKnight || odinBuff) )
 				weapon = Excalipoor;
 		break;
@@ -295,12 +299,14 @@ int main(int argc, char** argv)
 			int upperFibo;
 			int temp1, temp2, temp3;
 			temp1 = 1, temp2 = 1, temp3 = 0;
+
 			while (temp1 < theKnight.HP && temp2 < theKnight.HP && temp3 < theKnight.HP)
 			{
 				temp3 = temp2 + temp1; if (temp3 > theKnight.HP) { upperFibo = temp3; break; }
 				temp1 = temp3 + temp2; if (temp1 > theKnight.HP) { upperFibo = temp1; break; }
 				temp2 = temp1 + temp3; if (temp2 > theKnight.HP) { upperFibo = temp2; break; }
 			}
+			
 			theKnight.HP = (upperFibo > maxHP) ? maxHP : upperFibo;
 		break;
 		case 13:	// MUSH GHOST
@@ -381,7 +387,15 @@ int main(int argc, char** argv)
 		} // SWITCH BREAK GOES HERE = EVENT IS DONE
 		
 		// AFTER EVENT
-		LOG_STAT;
+		if (isLancelot)	// LANCELOT - ARTHUR DUALITY
+		{
+			if (theKnight.level % 2 != 0) 
+				{ isArthur = true; }
+			else 
+				{ isArthur = false; }
+		}
+		
+		if (odinBuff) { odinBuff--; }	// Odin helps EVERY event		
 		
 		if (theKnight.HP < 1)	// NEAR-DEATH
 		{
@@ -429,16 +443,8 @@ int main(int argc, char** argv)
 			}
 		}
 
-		if (isLancelot)	// LANCELOT - ARTHUR DUALITY
-		{
-			if (theKnight.level % 2 != 0) 
-				{ isArthur = true; }
-			else 
-				{ isArthur = false; }
-		}
-		
-		if (odinBuff) { odinBuff--; }	// Odin helps EVERY event
-		
+		LOG_STAT;
+
 		if (*nOut == -1 || theEvent == 0) { break; }
 	}
 
@@ -448,6 +454,7 @@ int main(int argc, char** argv)
 	}
 	
 	display(nOut);
+	
 	delete nOut;	//////////////////// VERY IMPORTANT //////////////////////////////////////
 	delete[] arrEvent;
 
