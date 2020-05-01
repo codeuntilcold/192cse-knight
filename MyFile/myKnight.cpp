@@ -9,14 +9,13 @@ using namespace std;
 
 ///////////////////////////// DEBUG MACROS /////////////////////////////////
 #ifndef DEBUG
-#define LOG_STAT
 #define LOG_IDENTITY
+#define LOG_STAT
 #else
 #define LOG_IDENTITY cout << "Paladin " << isPaladin << " DragonKnight " << isDragonKnight << endl
 #define LOG_STAT cout << i + 1 << "th event " << theEvent << ":\t" << theKnight.HP << ' ' << theKnight.level << ' ' << theKnight.remedy << ' ' << theKnight.maidenkiss << ' ' << theKnight.phoenixdown << endl
 #endif
 
-///////////////////////////// VERY EPIC ////////////////////////////////////
 enum Drop { Base = 1, Excalibur = 8, Mithril, Excalipoor, DragonBlade = 23 };
 
 const int EVENT_SIZE = 200;
@@ -259,8 +258,10 @@ int main(int argc, char** argv)
 			}
 			else if (normalLose)
 			{
-				// NEW: Wearing Mithril and you won't lose health, but still get a *5 HP increase after this debuff
-				if (armor != Mithril) { theKnight.HP = (theKnight.HP < 5) ? 1 : (theKnight.HP / 5); }
+				if (armor != Mithril) 
+				{ 
+					theKnight.HP = (theKnight.HP < 5) ? 1 : (theKnight.HP / 5); 
+				}
 				isTiny = 4;	// Affects next 3 events
 			}
 		break;
@@ -288,7 +289,9 @@ int main(int argc, char** argv)
 		case 10:	// EXCALIPOOR
 			// NEW: Odin won't pick you a bad sword
 			if ( !(theKnight.level > 4 || isArthur || isPaladin || isDragonKnight || odinBuff) )
+			{
 				weapon = Excalipoor;
+			}
 		break;
 
 		case 11:	// MUSH MARIO
@@ -329,7 +332,7 @@ int main(int argc, char** argv)
 			if (theKnight.phoenixdown < 99) { theKnight.phoenixdown++; }
 		break;
 		case 18:	// MERLIN
-			if (isTiny) { isTiny = 0; }	// HP is full
+			if (isTiny) { isTiny = 0; }
 			if (isFrog) { isFrog = 0; }	// Level stays the same
 
 			if (theKnight.level < 10) { theKnight.level++; }
@@ -338,7 +341,10 @@ int main(int argc, char** argv)
 		break;
 
 		case 19:	// ABYSS
-			if ( !(theKnight.level > 6 || isDragonKnight && weapon == DragonBlade || odinBuff) ) { *nOut = -1; }
+			if ( !(theKnight.level > 6 || isDragonKnight && weapon == DragonBlade || odinBuff) ) 
+			{ 
+				*nOut = -1; 
+			}
 		break;
 
 		case 20:	// PRINCESS ESCAPED == Past become future
@@ -374,8 +380,7 @@ int main(int argc, char** argv)
 		break;
 
 		case 99:	// BOWSER
-			// NEW: Excalipoor = lose
-			if (odinBuff || isArthur ||(isLancelot || theKnight.level == 10) && weapon != Excalipoor || isPaladin && theKnight.level > 7 || isDragonKnight && weapon == DragonBlade)
+			if (odinBuff || isArthur || isLancelot || theKnight.level == 10 && weapon != Excalipoor || isPaladin && theKnight.level > 7 || isDragonKnight && weapon == DragonBlade)
 			{
 				theKnight.level = 10;
 			}
@@ -419,6 +424,7 @@ int main(int argc, char** argv)
 			{
 				isTiny = 0;
 				theKnight.remedy--;
+
 				theKnight.HP *= 5;
 				theKnight.HP = (theKnight.HP > maxHP) ? maxHP : theKnight.HP;
 			}
