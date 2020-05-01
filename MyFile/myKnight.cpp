@@ -216,7 +216,7 @@ int main(int argc, char** argv)
 		levelO = ( (i + 1) > 6 ) ? ( b > 5 ? b : 5) : b;
 
 		// NEW: Lancelot can pick up Excalipoor
-		bool normalWin = isPaladin || odinBuff || (theKnight.level > levelO || isArthur) && weapon != Excalipoor || isDragonKnight && weapon == DragonBlade;
+		bool normalWin = isPaladin || isArthur || odinBuff || theKnight.level > levelO && weapon != Excalipoor || isDragonKnight && weapon == DragonBlade;
 		bool normalLose = theKnight.level < levelO || weapon == Excalipoor;
 	
 		// MAIN EVENT		
@@ -375,7 +375,7 @@ int main(int argc, char** argv)
 
 		case 99:	// BOWSER
 			// NEW: Excalipoor = lose
-			if (odinBuff || (isArthur || isLancelot || theKnight.level == 10) && weapon != Excalipoor || isPaladin && theKnight.level > 7 || isDragonKnight && weapon == DragonBlade)
+			if (odinBuff || isArthur ||(isLancelot || theKnight.level == 10) && weapon != Excalipoor || isPaladin && theKnight.level > 7 || isDragonKnight && weapon == DragonBlade)
 			{
 				theKnight.level = 10;
 			}
