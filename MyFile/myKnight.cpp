@@ -214,6 +214,14 @@ int main(int argc, char** argv)
 		b = (i + 1) % 10;
 		levelO = ( (i + 1) > 6 ) ? ( b > 5 ? b : 5) : b;
 
+		if (isLancelot)	// LANCELOT - ARTHUR DUALITY
+		{
+			if (theKnight.level % 2 != 0) 
+				{ isArthur = true; }
+			else 
+				{ isArthur = false; }
+		}
+
 		// NEW: Lancelot can pick up Excalipoor
 		bool normalWin = isPaladin || isArthur || odinBuff || theKnight.level > levelO && weapon != Excalipoor || isDragonKnight && weapon == DragonBlade;
 		bool normalLose = theKnight.level < levelO || weapon == Excalipoor;
@@ -291,6 +299,7 @@ int main(int argc, char** argv)
 			if ( !(theKnight.level > 4 || isArthur || isPaladin || isDragonKnight || odinBuff) )
 			{
 				weapon = Excalipoor;
+				cout << "POOR" << endl;
 			}
 		break;
 
@@ -301,9 +310,10 @@ int main(int argc, char** argv)
 			// Avoid cross initialization
 			int upperFibo;
 			int temp1, temp2, temp3;
+			upperFibo = 2;	// In case theKnight.HP == 1
 			temp1 = 1, temp2 = 1, temp3 = 0;
 
-			while (temp1 < theKnight.HP && temp2 < theKnight.HP && temp3 < theKnight.HP)
+			while (temp1 <= theKnight.HP && temp2 <= theKnight.HP && temp3 <= theKnight.HP)
 			{
 				temp3 = temp2 + temp1; if (temp3 > theKnight.HP) { upperFibo = temp3; break; }
 				temp1 = temp3 + temp2; if (temp1 > theKnight.HP) { upperFibo = temp1; break; }
@@ -394,13 +404,6 @@ int main(int argc, char** argv)
 		} // SWITCH BREAK GOES HERE = EVENT IS DONE
 		
 		// AFTER EVENT
-		if (isLancelot)	// LANCELOT - ARTHUR DUALITY
-		{
-			if (theKnight.level % 2 != 0) 
-				{ isArthur = true; }
-			else 
-				{ isArthur = false; }
-		}
 		
 		if (odinBuff) { odinBuff--; }	// Odin helps EVERY event		
 		
