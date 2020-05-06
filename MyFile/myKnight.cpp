@@ -362,6 +362,8 @@ int main(int argc, char** argv)
 		break;
 
 		case 21:	// LIGHTWING
+			if (metOdin) { odinBuff = 0; }
+
 			for (int step = 0; step < 3; step++)
 			{
 				if (++i > nEvent - 1 || arrEvent[i] == 0 || arrEvent[i] == 20 || metPrincess)
